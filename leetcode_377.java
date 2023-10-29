@@ -10,7 +10,7 @@ public class leetcode_377 {
 
     private int backtrack(int[] nums, int remains) {
         if (remains == 0)
-            return 1;
+             return 1;
         if (map.containsKey(remains)) {
             return map.get(remains);
         }
@@ -22,6 +22,7 @@ public class leetcode_377 {
             }
         }
         map.put(remains, res);
+        // All computations for the current value of remains are completed.
         return res;
     }
 
