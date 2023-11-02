@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<set>
+#include<algorithm>
 using namespace std;
 
 //my solution:
@@ -32,25 +33,31 @@ public:
 //the better one
 class Solution {
 public:
-    static constexpr int POLE_NUM = 10;
     int countPoints(string rings) {
-        vector<int> state(POLE_NUM);
-        int n = rings.size();
-        for (int i = 0; i < n; i += 2) {
-            char color = rings[i];
-            int pole_index = rings[i + 1] - '0';
-            if (color == 'R') {
-                state[pole_index] |= 1;
-            } else if (color == 'G') {
-                state[pole_index] |= 2;
-            } else {
-                state[pole_index] |= 4;
+        vector<int> state(10,0);
+        for(int i=0;i<rings.size();i+=2)
+        {
+            if(rings[i]=='R')
+            {
+                state[rings[i+1]-'0']|=1;
+            }
+            else if(rings[i]=='G')
+            {
+                state[rings[i+1]-'0']|=2;
+            }
+            else
+            {
+                state[rings[i+1]-'0']|=4;
             }
         }
-        int res = 0;
-        for (int i = 0; i < POLE_NUM; i++) {
-            res += state[i] == 7;
-        }
-        return res;
+        int cnt=0;
+        for_each(state.begin(),state.end(),[&cnt](int x){
+            if(x==7)
+            {
+               cnt++; 
+            }
+         
+        });
+        return cnt;
     }
 };
