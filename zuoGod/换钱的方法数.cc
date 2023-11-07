@@ -30,7 +30,7 @@ int coins2(vector<int> arr,int aim)
     {
         return 0;
     }
-    vector<vector<int> > map(arr.size(),vector<int>(aim+1,0));
+    vector<vector<int> > map(arr.size()+1,vector<int>(aim+1,0));
     return process2(arr,0,aim,map);
 }
 int process2(vector<int> arr,int index,int aim,vector<vector<int>>& map)
