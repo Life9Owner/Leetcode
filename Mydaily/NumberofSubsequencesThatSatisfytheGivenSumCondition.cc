@@ -44,7 +44,7 @@ using namespace std;
     // }
 // };
 
-    const int MOD = 1e9 + 7;
+//     const int MOD = 1e9 + 7;
 
 // class Solution {
 // public:
@@ -73,42 +73,90 @@ using namespace std;
 //         }
 //     }
 // };
+// class Solution {
+// public:
+//     int numSubseq(std::vector<int>& nums, int target) {
+//         std::sort(nums.begin(), nums.end());
+//         int count = 0;
+//         dfs(nums, target, 0, nums.size() - 1, count);
+//         return count;
+//     }
+
+// private:
+//     void dfs(std::vector<int>& nums, int target, int left, int right, int& count) {
+//         if (left > right) return;
+        
+//         if (nums[left] + nums[right] <= target) {
+//             // If the smallest and largest numbers fit the condition, all combinations
+//             // between left and right are valid because the array is sorted.
+//             count = (count + powMod(2, right - left)) % MOD; // 2^(right-left)subsequences
+//             dfs(nums, target, left + 1, right, count); // Try next subsequence
+//         } else {
+//             // If the current pair is invalid, the pairs with the current right
+//             // and any number after left are also invalid.
+//             dfs(nums, target, left, right - 1, count); // Try with a smaller maximum
+//         }
+//     }
+
+//     int powMod(int base, int exp) {
+//         int result = 1;
+//         base %= MOD;
+        
+//         while (exp > 0) {
+//             if (exp % 2 == 1)
+//                 result = (int)((long long)result * base % MOD);
+//             base = (int)((long long)base * base % MOD);
+//             exp /= 2;
+//         }
+        
+//         return result;
+//     }
+// };
 class Solution {
 public:
-    int numSubseq(std::vector<int>& nums, int target) {
-        std::sort(nums.begin(), nums.end());
-        int count = 0;
-        dfs(nums, target, 0, nums.size() - 1, count);
-        return count;
-    }
 
-private:
-    void dfs(std::vector<int>& nums, int target, int left, int right, int& count) {
-        if (left > right) return;
-        
-        if (nums[left] + nums[right] <= target) {
-            // If the smallest and largest numbers fit the condition, all combinations
-            // between left and right are valid because the array is sorted.
-            count = (count + powMod(2, right - left)) % MOD; // 2^(right-left)subsequences
-            dfs(nums, target, left + 1, right, count); // Try next subsequence
-        } else {
-            // If the current pair is invalid, the pairs with the current right
-            // and any number after left are also invalid.
-            dfs(nums, target, left, right - 1, count); // Try with a smaller maximum
-        }
+    vector<int> path;
+    bool check(vector<int>& path,int target)
+    {
+        if(path.size()==0)return false;
+        return path.front()+path.back()<=target;
     }
-
-    int powMod(int base, int exp) {
-        int result = 1;
-        base %= MOD;
+    int dfs(vector<int>& nums,int index,int target)
+    {
+    int res=0;
         
-        while (exp > 0) {
-            if (exp % 2 == 1)
-                result = (int)((long long)result * base % MOD);
-            base = (int)((long long)base * base % MOD);
-            exp /= 2;
+        if(check(path,target)==true)
+        {
+            res=(res+1)%(int)(1e9+7);
+            cout<<res<<" ";
+            // for(auto x:path)
+            // {
+            //     cout<<x<<" ";
+            // }
+            cout<<endl;
         }
         
-        return result;
+        
+        for(int i=index;i<nums.size();i++)
+        {
+            path.push_back(nums[i]);
+            res+=dfs(nums,i+1,target); 
+            path.pop_back();   
+        }
+        
+        return res;
+    }
+    int numSubseq(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        return dfs(nums,0,target);
     }
 };
+
+int main() {
+    Solution sol;
+    vector<int> nums = {3, 5, 6, 7}; // Example input
+    int target = 9; // Example target
+    int result = sol.numSubseq(nums, target);
+    cout << "Number of subsequences: " << result << endl;
+    return 0;
+}
