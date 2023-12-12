@@ -1,6 +1,7 @@
 #include<iostream>
 #include<utility>
 #include<vector>
+#include<algorithm>
 #include<queue>
 using namespace std;
 class Solution {
